@@ -9,5 +9,7 @@ import br.com.tripleahackathon.help_state.modules.citizen.entities.CitizenEntity
 
 public interface CitizenRepository extends JpaRepository<CitizenEntity, UUID> {
 
+    Optional<CitizenEntity> findByUsernameOrEmail(String username, String email);
+
     Optional<CitizenEntity> findByUsername(String username);
 }

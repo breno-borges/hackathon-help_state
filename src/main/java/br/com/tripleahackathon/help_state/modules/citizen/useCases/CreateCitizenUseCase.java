@@ -18,7 +18,7 @@ public class CreateCitizenUseCase {
     private PasswordEncoder passwordEncoder;
 
     public CitizenEntity execute(CitizenEntity citizenEntity) {
-        this.citizenRepository.findByUsername(citizenEntity.getUsername())
+        this.citizenRepository.findByUsernameOrEmail(citizenEntity.getUsername(), citizenEntity.getEmail())
                 .ifPresent((user) -> {
                     throw new UserFoundException();
                 });
