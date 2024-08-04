@@ -1,4 +1,4 @@
-package br.com.tripleahackathon.help_state.modules.citizen.entities;
+package br.com.tripleahackathon.help_state.modules.profile.entities;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -19,8 +19,8 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
-@Entity(name = "citizen_profile")
-public class CitizenEntity {
+@Entity(name = "profile")
+public class ProfileEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -53,6 +53,8 @@ public class CitizenEntity {
     private String password;
 
     private String profilePicture;
+
+    private int active;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

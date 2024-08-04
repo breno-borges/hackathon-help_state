@@ -15,7 +15,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 public class SecurityConfig {
 
     @Autowired
-    private SecurityFilterCitizen securityFilterCitizen;
+    private SecurityFilter securityFilter;
 
     private static final String[] SWAGGER_LIST = {
             "/swagger-ui/**",
@@ -27,12 +27,13 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/citizen/**").permitAll()// Rotas a verificar
+                    auth.requestMatchers("/citizen/**").permitAll()
+                            .requestMatchers("/state/**").permitAll()
                             .requestMatchers(SWAGGER_LIST).permitAll();
                     auth.anyRequest().authenticated();
 
                 })
-                .addFilterBefore(securityFilterCitizen, BasicAuthenticationFilter.class);
+                .addFilterBefore(securityFilter, BasicAuthenticationFilter.class);
         return http.build();
     }
 

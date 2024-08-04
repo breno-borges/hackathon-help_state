@@ -1,4 +1,4 @@
-package br.com.tripleahackathon.help_state.modules.citizen.controllers;
+package br.com.tripleahackathon.help_state.modules.state.controllers;
 
 import java.util.UUID;
 
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import br.com.tripleahackathon.help_state.modules.citizen.dto.ProfileCitizenResponseDTO;
 import br.com.tripleahackathon.help_state.modules.profile.entities.ProfileEntity;
-import br.com.tripleahackathon.help_state.modules.citizen.useCases.CreateCitizenUseCase;
-import br.com.tripleahackathon.help_state.modules.citizen.useCases.ProfileCitizenUseCase;
+import br.com.tripleahackathon.help_state.modules.state.useCases.CreateStateUseCase;
+import br.com.tripleahackathon.help_state.modules.state.useCases.ProfileStateUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -26,18 +26,18 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/citizen")
-@Tag(name = "Cidadao", description = "Informacoes do cidadao")
-public class CitizenController {
+@RequestMapping("/state")
+@Tag(name = "Estado", description = "Informacoes do estado")
+public class StateController {
 
     @Autowired
-    private CreateCitizenUseCase createCitizenUseCase;
+    private CreateStateUseCase createStateUseCase;
 
     @Autowired
-    private ProfileCitizenUseCase profileCitizenUseCase;
+    private ProfileStateUseCase profileStateUseCase;
 
     @PostMapping("/")
-    @Operation(summary = "Cadastro do cidadao", description = "Essa funcao e responsavel por cadastrar as informacoes do cidadao")
+    @Operation(summary = "Cadastro do estado", description = "Essa funcao e responsavel por cadastrar as informacoes do estado")
     @ApiResponses({
             @ApiResponse(responseCode = "200", content = {
                     @Content(schema = @Schema(implementation = ProfileEntity.class))
@@ -47,7 +47,7 @@ public class CitizenController {
     public ResponseEntity<Object> createCitizen(@Valid @RequestBody ProfileEntity profileEntity) {
 
         try {
-            ProfileEntity result = this.createCitizenUseCase.execute(profileEntity);
+            ProfileEntity result = this.createStateUseCase.execute(profileEntity);
             return ResponseEntity.ok().body(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -55,8 +55,8 @@ public class CitizenController {
     }
 
     @GetMapping("/")
-    @PreAuthorize("hasRole('CITIZEN')")
-    @Operation(summary = "Perfil do cidadao", description = "Essa funcao e responsavel por buscar as informacoes do perfil do cidadao")
+    @PreAuthorize("hasRole('STATE')")
+    @Operation(summary = "Perfil do estado", description = "Essa funcao e responsavel por buscar as informacoes do perfil do estado")
     @ApiResponses({
             @ApiResponse(responseCode = "200", content = {
                     @Content(schema = @Schema(implementation = ProfileCitizenResponseDTO.class))
@@ -67,9 +67,9 @@ public class CitizenController {
     @SecurityRequirement(name = "jwt_auth")
     public ResponseEntity<Object> get(HttpServletRequest request) {
 
-        var idCandidate = request.getAttribute("id");
+        var idState = request.getAttribute("id");
         try {
-            var profile = this.profileCitizenUseCase.execute(UUID.fromString(idCandidate.toString()));
+            var profile = this.profileStateUseCase.execute(UUID.fromString(idState.toString()));
             return ResponseEntity.ok().body(profile);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
