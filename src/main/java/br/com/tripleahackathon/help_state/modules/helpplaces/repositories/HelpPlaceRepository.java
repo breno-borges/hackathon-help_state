@@ -1,5 +1,6 @@
 package br.com.tripleahackathon.help_state.modules.helpplaces.repositories;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -9,7 +10,7 @@ import br.com.tripleahackathon.help_state.modules.helpplaces.entities.HelpPlaceE
 
 public interface HelpPlaceRepository extends JpaRepository<HelpPlaceEntity, UUID> {
 
-    Optional<HelpPlaceRepository> findByNameOrAdress(String name, String adress);
+    Optional<HelpPlaceEntity> findByNameOrAdress(String name, String adress);
 
-    Optional<HelpPlaceRepository> findByState(String state);
+    List<HelpPlaceEntity> findByState(String state);
 }
