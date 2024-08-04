@@ -1,4 +1,4 @@
-package br.com.tripleahackathon.help_state.modules.state.repository;
+package br.com.tripleahackathon.help_state.modules.state.repositories;
 
 import java.util.Optional;
 import java.util.UUID;

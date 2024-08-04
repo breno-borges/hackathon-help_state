@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.tripleahackathon.help_state.exceptions.UserNotFoundException;
 import br.com.tripleahackathon.help_state.modules.state.dto.ProfileStateResponseDTO;
-import br.com.tripleahackathon.help_state.modules.state.repository.StateRepository;
+import br.com.tripleahackathon.help_state.modules.state.repositories.StateRepository;
 
 @Service
 public class ProfileStateUseCase {

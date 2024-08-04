@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.tripleahackathon.help_state.exceptions.UserFoundException;
 import br.com.tripleahackathon.help_state.modules.profile.entities.ProfileEntity;
-import br.com.tripleahackathon.help_state.modules.state.repository.StateRepository;
+import br.com.tripleahackathon.help_state.modules.state.repositories.StateRepository;
 
 @Service
 public class CreateStateUseCase {

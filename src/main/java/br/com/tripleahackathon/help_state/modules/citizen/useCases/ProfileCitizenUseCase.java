@@ -28,6 +28,7 @@ public class ProfileCitizenUseCase {
                 .state(citizen.getState())
                 .userType(citizen.getUserType())
                 .username(citizen.getUsername())
+                .profilePicture(citizen.getProfilePicture())
                 .id(citizen.getId())
                 .build();
         return citizenDTO;

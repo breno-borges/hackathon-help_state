@@ -46,7 +46,7 @@ public class AuthCitizenUseCase {
 
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
 
-        var expiresIn = Instant.now().plus(Duration.ofMinutes(10));
+        var expiresIn = Instant.now().plus(Duration.ofDays(1));
         var token = JWT.create().withIssuer("help_state")
                 .withSubject(citizen.getId().toString())
                 .withClaim("roles", Arrays.asList("CITIZEN"))

@@ -17,7 +17,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 
 import br.com.tripleahackathon.help_state.modules.state.dto.AuthStateRequestDTO;
 import br.com.tripleahackathon.help_state.modules.state.dto.AuthStateResponseDTO;
-import br.com.tripleahackathon.help_state.modules.state.repository.StateRepository;
+import br.com.tripleahackathon.help_state.modules.state.repositories.StateRepository;
 
 @Service
 public class AuthStateUseCase {
@@ -45,7 +45,7 @@ public class AuthStateUseCase {
 
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
 
-        var expiresIn = Instant.now().plus(Duration.ofMinutes(10));
+        var expiresIn = Instant.now().plus(Duration.ofDays(1));
         var token = JWT.create().withIssuer("help_state")
                 .withSubject(citizen.getId().toString())
                 .withClaim("roles", Arrays.asList("STATE"))

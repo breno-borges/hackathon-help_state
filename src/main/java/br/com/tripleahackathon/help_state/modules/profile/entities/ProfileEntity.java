@@ -54,6 +54,7 @@ public class ProfileEntity {
 
     private String profilePicture;
 
+    @Schema(description = "Informa se o usuário está ativo ou não. 1 - ativo 0 - inativo")
     private int active;
 
     @CreationTimestamp
