@@ -40,3 +40,8 @@ export default {
 
 ## Documentation
 - REST API documentation made in Swagger.
+
+# Authors
+- <a href="https://github.com/breno-borges" target="_blank">@Breno Borges<a/>
+- <a href="https://github.com/moonixt" target="_blank">@Derek Willian<a/>
+- <a href="https://github.com/lov1sk" target="_blank">@Lucas Santana<a/>
