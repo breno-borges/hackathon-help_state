@@ -17,6 +17,7 @@ public class ProfileUseCase {
     private ProfileRepository profileRepository;
 
     public ProfileCitizenResponseDTO executeCitizen(UUID idProfile) {
+        System.out.println(idProfile);
         var citizen = this.profileRepository.findById(idProfile)
                 .orElseThrow(() -> {
                     throw new UserNotFoundException();
@@ -36,6 +37,7 @@ public class ProfileUseCase {
     }
 
     public ProfileStateResponseDTO executeState(UUID idState) {
+        System.out.println(idState);
         var state = this.profileRepository.findById(idState)
                 .orElseThrow(() -> {
                     throw new UserNotFoundException();

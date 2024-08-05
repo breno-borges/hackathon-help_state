@@ -32,9 +32,7 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/citizen/**").permitAll()
-                            .requestMatchers("/state/**").permitAll()
-                            .requestMatchers("/help-place/**").permitAll()
+                    auth.requestMatchers("/help-place/**").permitAll()
                             .requestMatchers("/profile/**").permitAll()
                             .requestMatchers(SWAGGER_LIST).permitAll();
                     auth.anyRequest().authenticated();

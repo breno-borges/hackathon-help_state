@@ -9,8 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import br.com.tripleahackathon.help_state.providers.JWTProviderCitizen;
-import br.com.tripleahackathon.help_state.providers.JWTProviderState;
+import br.com.tripleahackathon.help_state.providers.JWTProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,10 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class SecurityFilter extends OncePerRequestFilter {
 
     @Autowired
-    private JWTProviderCitizen jwtProviderCitizen;
-
-    @Autowired
-    private JWTProviderState jwtProviderState;
+    private JWTProvider jwtProdiver;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -33,7 +29,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         if (request.getRequestURI().startsWith("/profile")) {
             if (header != null) {
-                var token = this.jwtProviderCitizen.validationToken(header);
+                var token = this.jwtProvider.validationToken(header);
 
                 if (token == null) {
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

@@ -22,11 +22,8 @@ import br.com.tripleahackathon.help_state.modules.profile.repositories.ProfileRe
 @Service
 public class AuthProfileUseCase {
 
-    @Value("${security.token.secret.citizen}")
-    private String secretKeyCitizen;
-
-    @Value("${security.token.secret.state}")
-    private String secretKeyState;
+    @Value("${security.token.secret}")
+    private String secretKey;
 
     @Autowired
     private ProfileRepository profileRepository;
@@ -53,14 +50,14 @@ public class AuthProfileUseCase {
         String token;
 
         if (userType.equals("CITIZEN")) {
-            Algorithm algorithm = Algorithm.HMAC256(secretKeyCitizen);
+            Algorithm algorithm = Algorithm.HMAC256(secretKey);
             token = JWT.create().withIssuer("help_state")
                     .withSubject(profile.getId().toString())
                     .withClaim("roles", Arrays.asList("CITIZEN"))
                     .withExpiresAt(expiresIn)
                     .sign(algorithm);
         } else if (userType.equals("STATE")) {
-            Algorithm algorithm = Algorithm.HMAC256(secretKeyState);
+            Algorithm algorithm = Algorithm.HMAC256(secretKey);
             token = JWT.create().withIssuer("help_state")
                     .withSubject(profile.getId().toString())
                     .withClaim("roles", Arrays.asList("STATE"))
