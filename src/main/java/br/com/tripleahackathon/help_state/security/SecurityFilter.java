@@ -29,7 +29,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         if (request.getRequestURI().startsWith("/profile")) {
             if (header != null) {
-                var token = this.jwtProvider.validationToken(header);
+                var token = this.jwtProdiver.validationToken(header);
 
                 if (token == null) {
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
