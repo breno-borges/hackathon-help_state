@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Define a cor do indicador da barra de rolagem */
+::-webkit-scrollbar-thumb {
+  background-color: #86efac;
+}
+
+/* Define a cor da pista da barra de rolagem */
+::-webkit-scrollbar-track {
+  background-color: #bbf7d0;
+}
+
+color-scheme: light dark;
+color: rgba(0, 0, 0, 0.87);
+background-color: #ebedf0;
