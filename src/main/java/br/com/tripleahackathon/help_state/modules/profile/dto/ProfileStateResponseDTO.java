@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProfileStateResponseDTO {
+public class ProfileStateResponseDTO implements ProfileResponseDTO {
 
     private String name;
     private String email;

@@ -75,29 +75,13 @@ public class ProfileController {
     public ResponseEntity<Object> get(HttpServletRequest request) {
 
         var id = request.getAttribute("id");
-        Object userTypeAttribute = request.getAttribute("userType").toString();
-
-        String userType;
 
         try {
-            userType = userTypeAttribute.toString();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body("Invalid usertype format");
-        }
-
-        try {
-            if (userType.equals("CITIZEN")) {
-                var profile = this.profileUseCase.executeCitizen(UUID.fromString(id.toString()));
-                return ResponseEntity.ok().body(profile);
-            } else if (userType.equals("STATE")) {
-                var profile = this.profileUseCase.executeState(UUID.fromString(id.toString()));
-                return ResponseEntity.ok().body(profile);
-            }
-
+            var profile = this.profileUseCase.execute(UUID.fromString(id.toString()));
+            return ResponseEntity.ok().body(profile);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        return null;
     }
 
     @PutMapping("/{id}") // Voltar aqui

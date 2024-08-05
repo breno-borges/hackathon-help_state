@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 
 import br.com.tripleahackathon.help_state.exceptions.UserNotFoundException;
 import br.com.tripleahackathon.help_state.modules.profile.dto.ProfileCitizenResponseDTO;
+import br.com.tripleahackathon.help_state.modules.profile.dto.ProfileResponseDTO;
 import br.com.tripleahackathon.help_state.modules.profile.dto.ProfileStateResponseDTO;
+import br.com.tripleahackathon.help_state.modules.profile.entities.ProfileEntity;
 import br.com.tripleahackathon.help_state.modules.profile.repositories.ProfileRepository;
 
 @Service
@@ -16,40 +18,43 @@ public class ProfileUseCase {
     @Autowired
     private ProfileRepository profileRepository;
 
-    public ProfileCitizenResponseDTO executeCitizen(UUID idProfile) {
-        System.out.println(idProfile);
-        var citizen = this.profileRepository.findById(idProfile)
+    public ProfileResponseDTO execute(UUID idProfile) {
+        var profile = this.profileRepository.findById(idProfile)
                 .orElseThrow(() -> {
                     throw new UserNotFoundException();
                 });
 
+        if (profile.getUserType().equals("CITIZEN")) {
+            return executeCitizen(profile);
+        } else if (profile.getUserType().equals("STATE")) {
+            return executeState(profile);
+        } else {
+            throw new IllegalArgumentException("Invalid user type");
+        }
+    }
+
+    private ProfileCitizenResponseDTO executeCitizen(ProfileEntity profile) {
         var citizenDTO = ProfileCitizenResponseDTO.builder()
-                .name(citizen.getName())
-                .age(citizen.getAge())
-                .email(citizen.getEmail())
-                .state(citizen.getState())
-                .userType(citizen.getUserType())
-                .username(citizen.getUsername())
-                .profilePicture(citizen.getProfilePicture())
-                .id(citizen.getId())
+                .name(profile.getName())
+                .age(profile.getAge())
+                .email(profile.getEmail())
+                .state(profile.getState())
+                .userType(profile.getUserType())
+                .username(profile.getUsername())
+                .profilePicture(profile.getProfilePicture())
+                .id(profile.getId())
                 .build();
         return citizenDTO;
     }
 
-    public ProfileStateResponseDTO executeState(UUID idState) {
-        System.out.println(idState);
-        var state = this.profileRepository.findById(idState)
-                .orElseThrow(() -> {
-                    throw new UserNotFoundException();
-                });
-
+    private ProfileStateResponseDTO executeState(ProfileEntity profile) {
         var stateDTO = ProfileStateResponseDTO.builder()
-                .name(state.getName())
-                .email(state.getEmail())
-                .state(state.getState())
-                .userType(state.getUserType())
-                .username(state.getUsername())
-                .id(state.getId())
+                .name(profile.getName())
+                .email(profile.getEmail())
+                .state(profile.getState())
+                .userType(profile.getUserType())
+                .username(profile.getUsername())
+                .id(profile.getId())
                 .build();
         return stateDTO;
     }

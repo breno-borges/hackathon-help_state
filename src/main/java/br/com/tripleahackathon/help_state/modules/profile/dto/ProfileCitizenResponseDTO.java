@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProfileCitizenResponseDTO {
+public class ProfileCitizenResponseDTO implements ProfileResponseDTO {
 
     private String name;
     private int age;
