@@ -1,4 +1,4 @@
-package br.com.tripleahackathon.help_state.modules.citizen.controllers;
+package br.com.tripleahackathon.help_state.modules.profile.controllers;
 
 import java.util.UUID;
 
@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import br.com.tripleahackathon.help_state.modules.citizen.dto.ProfileCitizenResponseDTO;
-import br.com.tripleahackathon.help_state.modules.citizen.dto.UpdateCitizenRequestDTO;
+import br.com.tripleahackathon.help_state.modules.profile.dto.ProfileCitizenResponseDTO;
+import br.com.tripleahackathon.help_state.modules.profile.dto.UpdateCitizenRequestDTO;
 import br.com.tripleahackathon.help_state.modules.profile.entities.ProfileEntity;
-import br.com.tripleahackathon.help_state.modules.citizen.useCases.CreateCitizenUseCase;
-import br.com.tripleahackathon.help_state.modules.citizen.useCases.ProfileCitizenUseCase;
-import br.com.tripleahackathon.help_state.modules.citizen.useCases.UpdateCitizenUseCase;
+import br.com.tripleahackathon.help_state.modules.profile.useCases.CreateProfileUseCase;
+import br.com.tripleahackathon.help_state.modules.profile.useCases.ProfileUseCase;
+import br.com.tripleahackathon.help_state.modules.profile.useCases.UpdateProfileUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -30,18 +30,18 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/citizen")
-@Tag(name = "Cidadao", description = "Informacoes do cidadao")
-public class CitizenController {
+@RequestMapping("/profile")
+@Tag(name = "Profile", description = "Informacoes do perfil")
+public class ProfileController {
 
     @Autowired
-    private CreateCitizenUseCase createCitizenUseCase;
+    private CreateProfileUseCase createProfileUseCase;
 
     @Autowired
-    private ProfileCitizenUseCase profileCitizenUseCase;
+    private ProfileUseCase profileUseCase;
 
     @Autowired
-    private UpdateCitizenUseCase updateCitizenUseCase;
+    private UpdateProfileUseCase updateProfileUseCase;
 
     @PostMapping("/")
     @Operation(summary = "Cadastro do cidadao", description = "Essa funcao e responsavel por cadastrar as informacoes do cidadao")
@@ -54,7 +54,7 @@ public class CitizenController {
     public ResponseEntity<Object> createCitizen(@Valid @RequestBody ProfileEntity profileEntity) {
 
         try {
-            ProfileEntity result = this.createCitizenUseCase.execute(profileEntity);
+            ProfileEntity result = this.createProfileUseCase.execute(profileEntity);
             return ResponseEntity.ok().body(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -62,7 +62,7 @@ public class CitizenController {
     }
 
     @GetMapping("/")
-    @PreAuthorize("hasRole('CITIZEN')")
+    @PreAuthorize("hasRole('CITIZEN') or hasRole('STATE')")
     @Operation(summary = "Perfil do cidadao", description = "Essa funcao e responsavel por buscar as informacoes do perfil do cidadao")
     @ApiResponses({
             @ApiResponse(responseCode = "200", content = {
@@ -74,13 +74,30 @@ public class CitizenController {
     @SecurityRequirement(name = "jwt_auth")
     public ResponseEntity<Object> get(HttpServletRequest request) {
 
-        var idCandidate = request.getAttribute("id");
+        var id = request.getAttribute("id");
+        Object userTypeAttribute = request.getAttribute("userType").toString();
+
+        String userType;
+
         try {
-            var profile = this.profileCitizenUseCase.execute(UUID.fromString(idCandidate.toString()));
-            return ResponseEntity.ok().body(profile);
+            userType = userTypeAttribute.toString();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Invalid usertype format");
+        }
+
+        try {
+            if (userType.equals("CITIZEN")) {
+                var profile = this.profileUseCase.executeCitizen(UUID.fromString(id.toString()));
+                return ResponseEntity.ok().body(profile);
+            } else if (userType.equals("STATE")) {
+                var profile = this.profileUseCase.executeState(UUID.fromString(id.toString()));
+                return ResponseEntity.ok().body(profile);
+            }
+
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+        return null;
     }
 
     @PutMapping("/{id}") // Voltar aqui
@@ -94,7 +111,7 @@ public class CitizenController {
     public ResponseEntity<Object> update(@PathVariable UUID id,
             @Valid @RequestBody UpdateCitizenRequestDTO updateCitizenRequestDTO) {
         try {
-            var result = this.updateCitizenUseCase.put(id, updateCitizenRequestDTO);
+            var result = this.updateProfileUseCase.putCitizen(id, updateCitizenRequestDTO);
             return ResponseEntity.ok().body(result);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

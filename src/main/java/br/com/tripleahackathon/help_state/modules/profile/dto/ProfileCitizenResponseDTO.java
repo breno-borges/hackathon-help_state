@@ -1,4 +1,4 @@
-package br.com.tripleahackathon.help_state.modules.citizen.dto;
+package br.com.tripleahackathon.help_state.modules.profile.dto;
 
 import java.util.UUID;
 

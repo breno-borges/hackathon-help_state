@@ -1,4 +1,4 @@
-package br.com.tripleahackathon.help_state.modules.citizen.useCases;
+package br.com.tripleahackathon.help_state.modules.profile.useCases;
 
 import java.util.UUID;
 
@@ -7,22 +7,23 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.tripleahackathon.help_state.exceptions.UserNotFoundException;
-import br.com.tripleahackathon.help_state.modules.citizen.dto.CitizenActiveRequestDTO;
-import br.com.tripleahackathon.help_state.modules.citizen.dto.UpdateCitizenRequestDTO;
-import br.com.tripleahackathon.help_state.modules.citizen.repository.CitizenRepository;
+import br.com.tripleahackathon.help_state.modules.profile.dto.ProfileActiveRequestDTO;
+import br.com.tripleahackathon.help_state.modules.profile.dto.UpdateCitizenRequestDTO;
 import br.com.tripleahackathon.help_state.modules.profile.entities.ProfileEntity;
+import br.com.tripleahackathon.help_state.modules.profile.repositories.ProfileRepository;
 
 @Service
-public class UpdateCitizenUseCase {
+public class UpdateProfileUseCase {
+
     @Autowired
-    private CitizenRepository citizenRepository;
+    private ProfileRepository profileRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public ProfileEntity put(UUID id, UpdateCitizenRequestDTO updateCitizenRequestDTO) {
+    public ProfileEntity putCitizen(UUID id, UpdateCitizenRequestDTO updateCitizenRequestDTO) {
 
-        ProfileEntity profileEntity = this.citizenRepository.findById(id)
+        ProfileEntity profileEntity = this.profileRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException());
 
         profileEntity.setName(updateCitizenRequestDTO.name());
@@ -35,16 +36,15 @@ public class UpdateCitizenUseCase {
         var password = passwordEncoder.encode(profileEntity.getPassword());
         profileEntity.setPassword(password);
 
-        return this.citizenRepository.save(profileEntity);
+        return this.profileRepository.save(profileEntity);
     }
 
-    public ProfileEntity patch(UUID id, CitizenActiveRequestDTO citizenRequestActiveDTO) {
-        ProfileEntity profileEntity = this.citizenRepository.findById(id)
+    public ProfileEntity patch(UUID id, ProfileActiveRequestDTO profileRequestActiveDTO) {
+        ProfileEntity profileEntity = this.profileRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException());
 
-        profileEntity.setActive(citizenRequestActiveDTO.active());
+        profileEntity.setActive(profileRequestActiveDTO.active());
 
-        return this.citizenRepository.save(profileEntity);
+        return this.profileRepository.save(profileEntity);
     }
-
 }

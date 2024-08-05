@@ -1,4 +1,4 @@
-package br.com.tripleahackathon.help_state.modules.state.controllers;
+package br.com.tripleahackathon.help_state.modules.profile.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,20 +8,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.tripleahackathon.help_state.modules.state.dto.AuthStateRequestDTO;
-import br.com.tripleahackathon.help_state.modules.state.useCases.AuthStateUseCase;
+import br.com.tripleahackathon.help_state.modules.profile.dto.AuthProfileRequestDTO;
+import br.com.tripleahackathon.help_state.modules.profile.useCases.AuthProfileUseCase;
 
 @RestController
-@RequestMapping("/state")
-public class AuthStateController {
-
+@RequestMapping("/profile")
+public class AuthProfileController {
     @Autowired
-    private AuthStateUseCase authStateUseCase;
+    private AuthProfileUseCase authProfileUseCase;
 
     @PostMapping("/auth")
-    public ResponseEntity<Object> auth(@RequestBody AuthStateRequestDTO authStateRequestDTO) {
+    public ResponseEntity<Object> auth(@RequestBody AuthProfileRequestDTO authProfileRequestDTO) {
         try {
-            var token = this.authStateUseCase.execute(authStateRequestDTO);
+            var token = this.authProfileUseCase.execute(authProfileRequestDTO);
             return ResponseEntity.ok().body(token);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());

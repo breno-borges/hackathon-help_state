@@ -35,6 +35,7 @@ public class SecurityConfig {
                     auth.requestMatchers("/citizen/**").permitAll()
                             .requestMatchers("/state/**").permitAll()
                             .requestMatchers("/help-place/**").permitAll()
+                            .requestMatchers("/profile/**").permitAll()
                             .requestMatchers(SWAGGER_LIST).permitAll();
                     auth.anyRequest().authenticated();
 

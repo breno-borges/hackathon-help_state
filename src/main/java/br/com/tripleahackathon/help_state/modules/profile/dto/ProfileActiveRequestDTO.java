@@ -1,0 +1,5 @@
+package br.com.tripleahackathon.help_state.modules.profile.dto;
+
+public record ProfileActiveRequestDTO(int active) {
+
+}

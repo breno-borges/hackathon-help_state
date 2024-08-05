@@ -1,4 +1,4 @@
-package br.com.tripleahackathon.help_state.modules.citizen.dto;
+package br.com.tripleahackathon.help_state.modules.profile.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthCitizenResponseDTO {
+public class AuthProfileResponseDTO {
     private String access_token;
     private Long expires_in;
 }
